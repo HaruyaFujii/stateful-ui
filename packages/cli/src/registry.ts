@@ -27,8 +27,8 @@ export const REGISTRY: Record<string, ComponentMeta> = {
   'data-fetch': {
     name: 'DataFetch',
     description: 'Fetch data with built-in loading, error, and empty state handling.',
-    files: ['index.tsx', 'cache-client.ts', 'types.ts'],
-    peerDeps: ['react', 'react-dom', '@tanstack/react-query'],
+    files: ['index.tsx', 'fallbacks.tsx', 'types.ts', 'useDataFetch.ts'],
+    peerDeps: ['react', 'react-dom'],
   },
 };
 

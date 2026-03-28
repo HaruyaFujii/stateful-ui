@@ -2,25 +2,36 @@ import { z } from 'zod';
 import type { FieldType } from './types';
 
 // ----------------------------------------------------------------
+// Zod v4 compatible type checking
+// ----------------------------------------------------------------
+
+function getZodTypeName(zodType: z.ZodTypeAny): string | undefined {
+  return (zodType as any)._def?.typeName;
+}
+
+// ----------------------------------------------------------------
 // Unwrap optional / nullable / default wrappers to get the inner type
 // ----------------------------------------------------------------
 
 export function unwrapZodType(zodType: z.ZodTypeAny): z.ZodTypeAny {
-  if (zodType instanceof z.ZodOptional || zodType instanceof z.ZodNullable) {
-    return unwrapZodType(zodType.unwrap());
+  const typeName = getZodTypeName(zodType);
+
+  if (typeName === 'ZodOptional' || typeName === 'ZodNullable') {
+    return unwrapZodType((zodType as any).unwrap());
   }
-  if (zodType instanceof z.ZodDefault) {
-    return unwrapZodType(zodType._def.innerType);
+  if (typeName === 'ZodDefault') {
+    return unwrapZodType((zodType as any)._def.innerType);
   }
-  if (zodType instanceof z.ZodEffects) {
-    return unwrapZodType(zodType._def.schema);
+  if (typeName === 'ZodEffects') {
+    return unwrapZodType((zodType as any)._def.schema);
   }
   return zodType;
 }
 
 export function isOptional(zodType: z.ZodTypeAny): boolean {
-  if (zodType instanceof z.ZodOptional || zodType instanceof z.ZodNullable) return true;
-  if (zodType instanceof z.ZodDefault) return true;
+  const typeName = getZodTypeName(zodType);
+  if (typeName === 'ZodOptional' || typeName === 'ZodNullable') return true;
+  if (typeName === 'ZodDefault') return true;
   return false;
 }
 
@@ -30,24 +41,25 @@ export function isOptional(zodType: z.ZodTypeAny): boolean {
 
 export function inferFieldType(zodType: z.ZodTypeAny): FieldType {
   const inner = unwrapZodType(zodType);
+  const typeName = getZodTypeName(inner);
 
-  if (inner instanceof z.ZodString) {
+  if (typeName === 'ZodString') {
     // Use check metadata to refine type
-    const checks = inner._def.checks ?? [];
+    const checks = (inner as any)._def.checks ?? [];
     if (checks.some((c: { kind: string }) => c.kind === 'email')) return 'email';
     if (checks.some((c: { kind: string }) => c.kind === 'url')) return 'url';
     return 'text';
   }
 
-  if (inner instanceof z.ZodNumber) return 'number';
-  if (inner instanceof z.ZodBoolean) return 'checkbox';
-  if (inner instanceof z.ZodEnum) return 'select';
-  if (inner instanceof z.ZodNativeEnum) return 'select';
-  if (inner instanceof z.ZodDate) return 'date';
-  if (inner instanceof z.ZodArray) return 'multi-select';
+  if (typeName === 'ZodNumber') return 'number';
+  if (typeName === 'ZodBoolean') return 'checkbox';
+  if (typeName === 'ZodEnum') return 'select';
+  if (typeName === 'ZodNativeEnum') return 'select';
+  if (typeName === 'ZodDate') return 'date';
+  if (typeName === 'ZodArray') return 'multi-select';
 
   // Nested object — handled separately as a fieldset
-  if (inner instanceof z.ZodObject) return 'text';
+  if (typeName === 'ZodObject') return 'text';
 
   return 'text';
 }
@@ -58,11 +70,15 @@ export function inferFieldType(zodType: z.ZodTypeAny): FieldType {
 
 export function getEnumOptions(zodType: z.ZodTypeAny): string[] {
   const inner = unwrapZodType(zodType);
-  if (inner instanceof z.ZodEnum) {
-    return inner._def.values as string[];
+  const typeName = getZodTypeName(inner);
+
+  if (typeName === 'ZodEnum') {
+    return (inner as any)._def.values as string[];
   }
-  if (inner instanceof z.ZodNativeEnum) {
-    return Object.values(inner._def.values as Record<string, string>);
+  if (typeName === 'ZodNativeEnum') {
+    const values = (inner as any)._def.values as Record<string, string | number>;
+    // Filter out reverse mappings for number enums
+    return Object.values(values).filter(v => typeof v === 'string') as string[];
   }
   return [];
 }
