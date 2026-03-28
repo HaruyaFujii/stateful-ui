@@ -78,17 +78,24 @@ behave-ui は **Zod v4 に完全対応した** 数少ないフォームライブ
 コードをプロジェクトにコピーします。依存関係ゼロ。コードを完全に制御できます。
 
 ```bash
-# 最新版 v0.2.0（Zod v4 対応）
-# 注意: CLI は現在 npx のみ対応
+# 最新版 v1.0.0（yarn dlx 対応）
+# npm/pnpm ユーザー
 npx @behave-ui/cli@latest add async-button
 npx @behave-ui/cli@latest add auto-form
 npx @behave-ui/cli@latest add data-fetch
 
+# yarn ユーザー（v1.0.0 から対応）
+yarn dlx @behave-ui/cli@latest add async-button
+yarn dlx @behave-ui/cli@latest add auto-form
+yarn dlx @behave-ui/cli@latest add data-fetch
+
 # 全部まとめて
 npx @behave-ui/cli@latest add async-button auto-form data-fetch
+yarn dlx @behave-ui/cli@latest add async-button auto-form data-fetch
 
 # 一覧を確認
 npx @behave-ui/cli@latest list
+yarn dlx @behave-ui/cli@latest list
 ```
 
 ファイルは `src/components/ui/<ComponentName>/` に追加されます。
@@ -101,7 +108,7 @@ yarn add @behave-ui/react
 npm install @behave-ui/react
 ```
 
-**現在のバージョン: v0.2.0** (Zod v4 完全対応)
+**現在のバージョン: CLI v1.0.0 / React v0.2.0** (yarn dlx 対応 + Zod v4 完全対応)
 
 ---
 
@@ -371,7 +378,7 @@ behave-ui/
     │           ├── AsyncButton/
     │           ├── AutoForm/     # ✨ Zod v4 完全対応
     │           └── DataFetch/
-    └── cli/                      # @behave-ui/cli v0.1.4
+    └── cli/                      # @behave-ui/cli v1.0.0
         ├── package.json
         ├── tsconfig.json
         └── src/

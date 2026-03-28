@@ -240,7 +240,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@behave-ui/cli@workspace:packages/cli"
   dependencies:
-    "@behave-ui/react": "npm:^0.2.0"
     "@types/node": "npm:^25.5.0"
     "@types/prompts": "npm:^2.4.9"
     commander: "npm:^12.0.0"
@@ -253,7 +252,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@behave-ui/react@npm:^0.2.0, @behave-ui/react@workspace:packages/react":
+"@behave-ui/react@workspace:packages/react":
   version: 0.0.0-use.local
   resolution: "@behave-ui/react@workspace:packages/react"
   dependencies:
