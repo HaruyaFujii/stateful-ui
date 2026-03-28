@@ -261,8 +261,8 @@ const { execute, isPending, isSuccess, isError, error, reset } = useAsyncState({
 
 ```bash
 # 1. クローン
-git clone https://github.com/HaruyaFujii/stateful-ui.git
-cd stateful-ui
+git clone https://github.com/HaruyaFujii/behave-ui.git
+cd behave-ui
 
 # 2. Corepack を有効化（初回のみ）
 #    Node.js に標準付属。package.json の "packageManager" を読んで

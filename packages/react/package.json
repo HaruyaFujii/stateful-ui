@@ -13,7 +13,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/HaruyaFujii/stateful-ui"
+    "url": "https://github.com/HaruyaFujii/behave-ui"
   },
   "type": "module",
   "exports": {

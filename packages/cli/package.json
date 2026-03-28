@@ -6,7 +6,7 @@
   "type": "module",
   "repository": {
     "type": "git",
-    "url": "https://github.com/HaruyaFujii/stateful-ui"
+    "url": "https://github.com/HaruyaFujii/behave-ui"
   },
   "bin": {
     "behave-ui": "./dist/index.js"

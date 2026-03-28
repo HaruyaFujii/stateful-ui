@@ -140,8 +140,8 @@ const schema = z.object({
 ## 🔗 Related
 
 - **Main package**: [`@behave-ui/react`](https://www.npmjs.com/package/@behave-ui/react) — For npm package installation
-- **Documentation**: [GitHub Repository](https://github.com/HaruyaFujii/stateful-ui)
-- **Examples**: [Storybook](https://github.com/HaruyaFujii/stateful-ui) (coming soon)
+- **Documentation**: [GitHub Repository](https://github.com/HaruyaFujii/behave-ui)
+- **Examples**: [Storybook](https://github.com/HaruyaFujii/behave-ui) (coming soon)
 
 ## 📄 License
 
@@ -149,4 +149,4 @@ MIT
 
 ---
 
-Generated with ❤️ by [behave-ui](https://github.com/HaruyaFujii/stateful-ui)
+Generated with ❤️ by [behave-ui](https://github.com/HaruyaFujii/behave-ui)
