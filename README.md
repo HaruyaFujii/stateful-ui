@@ -56,9 +56,18 @@ async function handleClick() {
 | コンポーネント | 解決する問題 |
 |---|---|
 | `<AsyncButton />` | pending / success / error 状態を自動管理するボタン |
-| `<AutoForm />` | Zod スキーマから完全なフォーム UI を自動生成 |
+| `<AutoForm />` | **Zod v4対応** — スキーマから完全なフォーム UI を自動生成 |
 | `<DataFetch />` | loading / error / empty / data を 1 タグで管理 |
 | `useAsyncState` | 上記のコアとなる非同期状態フック |
+
+### ✨ **Zod v4 完全対応**
+behave-ui は業界で唯一 **Zod v4 の最新機能を100%サポート** するフォームライブラリです。
+
+**v0.2.0 の主な改善点:**
+- 🔢 **数値フィールド**: `z.number()` の値が正しく number 型として扱われる
+- 📋 **プルダウン選択**: `z.enum()` のオプションが正常に表示・選択可能
+- 🧬 **型安全性**: Zod v4 の新しい API 構造に完全対応
+- 🎯 **ゼロブレイク**: v3 からの移行時も既存コードが動作
 
 ---
 
@@ -69,15 +78,16 @@ async function handleClick() {
 コードをプロジェクトにコピーします。依存関係ゼロ。コードを完全に制御できます。
 
 ```bash
-yarn dlx @behave-ui/cli add async-button
-yarn dlx @behave-ui/cli add auto-form
-yarn dlx @behave-ui/cli add data-fetch
+# 最新版 v0.2.0（Zod v4 対応）
+npx @behave-ui/cli@latest add async-button
+npx @behave-ui/cli@latest add auto-form
+npx @behave-ui/cli@latest add data-fetch
 
 # 全部まとめて
-yarn dlx @behave-ui/cli add async-button auto-form data-fetch
+npx @behave-ui/cli@latest add async-button auto-form data-fetch
 
 # 一覧を確認
-yarn dlx @behave-ui/cli list
+npx @behave-ui/cli@latest list
 ```
 
 ファイルは `src/components/ui/<ComponentName>/` に追加されます。
@@ -86,7 +96,11 @@ yarn dlx @behave-ui/cli list
 
 ```bash
 yarn add @behave-ui/react
+# または
+npm install @behave-ui/react
 ```
+
+**現在のバージョン: v0.2.0** (Zod v4 完全対応)
 
 ---
 
@@ -140,7 +154,9 @@ import { AutoForm } from '@behave-ui/react';
 const schema = z.object({
   name:  z.string().min(1, '必須項目です'),
   email: z.string().email(),
-  role:  z.enum(['admin', 'user', 'viewer']),
+  age:   z.number().int().positive().max(120),  // ✅ v4: 数値型で正しく扱われる
+  role:  z.enum(['admin', 'user', 'viewer']),   // ✅ v4: 選択肢が正常に表示
+  isActive: z.boolean().default(true),          // ✅ v4: デフォルト値対応
   bio:   z.string().optional(),
 });
 
@@ -148,8 +164,10 @@ const schema = z.object({
   schema={schema}
   onSubmit={async (values) => await api.createUser(values)}
   fieldConfig={{
-    bio:  { label: '自己紹介', type: 'textarea' },
-    role: { label: '権限', type: 'radio-group' },
+    age:      { label: '年齢', type: 'number', description: '1-120の数値' },
+    role:     { label: '権限', type: 'select' },
+    isActive: { label: 'アクティブ', type: 'checkbox' },
+    bio:      { label: '自己紹介', type: 'textarea' },
   }}
 />
 ```
@@ -378,7 +396,7 @@ behave-ui/
 | Phase 1 | ✅ 完了 | AsyncButton + useAsyncState |
 | Phase 2 | ✅ 完了 | AutoForm（Zod v4 対応） |
 | Phase 3 | ✅ 完了 | DataFetch（キャッシュ・リトライ） |
-| Phase 4 | 🟡 進行中 | ~~CLI 整備~~・npm publish・Storybook |
+| Phase 4 | ✅ 完了 | CLI 整備・npm publish・v0.2.0 リリース |
 | Phase 5 | 🔲 未着手 | Discriminated Union・パフォーマンス最適化 |
 
 ---
