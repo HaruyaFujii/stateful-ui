@@ -354,8 +354,8 @@ behave-ui/
 │           ├── index.ts
 │           ├── registry.ts
 │           └── commands/add.ts
-└── apps/
-    └── docs/                     # Storybook（Phase 4 で追加予定）
+└── apps/                        # （Phase 4 で追加予定）
+    └── docs/                     # Storybook（未実装）
 ```
 
 ---
@@ -378,7 +378,7 @@ behave-ui/
 | Phase 1 | ✅ 完了 | AsyncButton + useAsyncState |
 | Phase 2 | ✅ 完了 | AutoForm（Zod v4 対応） |
 | Phase 3 | ✅ 完了 | DataFetch（キャッシュ・リトライ） |
-| Phase 4 | 🔲 次 | CLI 整備・npm publish・Storybook |
+| Phase 4 | 🟡 進行中 | ~~CLI 整備~~・npm publish・Storybook |
 | Phase 5 | 🔲 未着手 | Discriminated Union・パフォーマンス最適化 |
 
 ---
