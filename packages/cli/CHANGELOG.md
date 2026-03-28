@@ -1,5 +1,12 @@
 # @behave-ui/cli
 
+## 0.1.4
+
+### Patch Changes
+
+- Updated dependencies [f1c429c]
+  - @behave-ui/react@0.2.0
+
 ## 0.1.3
 
 ### Patch Changes
