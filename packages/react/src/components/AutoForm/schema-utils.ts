@@ -100,8 +100,11 @@ export function inferFieldType(zodType: z.ZodTypeAny): FieldType {
     // Use check metadata to refine type
     const def = (inner as any).def || (inner as any)._def;
     const checks = def.checks ?? [];
-    if (checks.some((c: { kind: string }) => c.kind === 'email')) return 'email';
-    if (checks.some((c: { kind: string }) => c.kind === 'url')) return 'url';
+
+    // Zero-break compatibility: support both Zod v3 and v4
+    // v3: c.kind === 'email' | v4: c.format === 'email'
+    if (checks.some((c: any) => c.kind === 'email' || c.format === 'email')) return 'email';
+    if (checks.some((c: any) => c.kind === 'url' || c.format === 'url')) return 'url';
     return 'text';
   }
 

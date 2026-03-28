@@ -1,6 +1,6 @@
 {
   "name": "@behave-ui/cli",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "CLI for adding behave-ui components to your project",
   "license": "MIT",
   "type": "module",
@@ -11,6 +11,10 @@
   "bin": {
     "behave-ui": "./dist/index.js"
   },
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch"

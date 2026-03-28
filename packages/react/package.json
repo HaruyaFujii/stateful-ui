@@ -1,6 +1,6 @@
 {
   "name": "@behave-ui/react",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Behavior-first React components. Async state, forms, and data fetching — batteries included.",
   "keywords": [
     "react",
@@ -28,7 +28,8 @@
   "types": "./dist/index.d.ts",
   "files": [
     "dist",
-    "src"
+    "src",
+    "README.md"
   ],
   "sideEffects": false,
   "scripts": {
@@ -45,9 +46,9 @@
     "react-dom": ">=18.0.0"
   },
   "dependencies": {
-    "@hookform/resolvers": "^3.3.0",
+    "@hookform/resolvers": "^5.2.2",
     "react-hook-form": "^7.51.0",
-    "zod": "^3.23.0"
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@testing-library/dom": "^10.1.0",

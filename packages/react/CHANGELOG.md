@@ -1,5 +1,35 @@
 # @behave-ui/react
 
+## 0.3.0
+
+### Minor Changes
+
+- feat: Complete Zod v4 compatibility with zero-break migration
+
+  **@behave-ui/react:**
+
+  - 🎯 **True zero-break compatibility**: Supports both Zod v3 and v4 simultaneously
+  - 🔧 **Email/URL field detection**: Updated schema-utils for v3 (`c.kind`) and v4 (`c.format`) compatibility
+  - 📦 **Dependencies updated**: @hookform/resolvers v3.10.0 → v5.2.2 for full Zod v4 support
+  - 📖 **Comprehensive README**: Component documentation, comparisons, and examples
+  - ✅ **All tests passing**: 61 test cases verify complete compatibility
+
+  **@behave-ui/cli:**
+
+  - 📖 **Detailed README**: Usage examples and universal package manager support
+  - 📁 **README included**: Added to package files for npm distribution
+
+## 0.2.1
+
+### Patch Changes
+
+- docs: Add comprehensive README files to both packages
+
+  - Add detailed README.md for @behave-ui/cli with usage examples and universal package manager support
+  - Add detailed README.md for @behave-ui/react with component documentation and comparisons
+  - Include README.md in package files for npm distribution
+  - Update @behave-ui/react to use Zod v4.3.6 in dependencies
+
 ## 0.2.0
 
 ### Minor Changes
