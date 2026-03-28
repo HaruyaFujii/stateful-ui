@@ -61,9 +61,6 @@ jobs:
 
       - run: yarn install --immutable
 
-      - name: Build packages
-        run: yarn build
-
       - name: Publish (changesets)
         run: yarn changeset publish
         env:

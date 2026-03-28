@@ -1,15 +1,11 @@
 {
-  "name": "@stateful-ui/cli",
+  "name": "@behave-ui/cli",
   "version": "0.1.0",
-  "description": "CLI for adding stateful-ui components to your project",
+  "description": "CLI for adding behave-ui components to your project",
   "license": "MIT",
   "type": "module",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/your-org/stateful-ui"
-  },
   "bin": {
-    "stateful-ui": "./dist/index.js"
+    "behave-ui": "./dist/index.js"
   },
   "scripts": {
     "build": "tsup",

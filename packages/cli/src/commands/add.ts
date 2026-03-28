@@ -24,7 +24,7 @@ function detectOutputDir(): string {
 }
 
 export const addCommand = new Command('add')
-  .description('Add a stateful-ui component to your project')
+  .description('Add a behave-ui component to your project')
   .argument('[components...]', `Components to add. Available: ${REGISTRY_KEYS.join(', ')}`)
   .option('-o, --out-dir <dir>', 'Target directory for the component files')
   .option('--overwrite', 'Overwrite existing files without prompting', false)

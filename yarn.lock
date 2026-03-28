@@ -236,6 +236,49 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@behave-ui/cli@workspace:packages/cli":
+  version: 0.0.0-use.local
+  resolution: "@behave-ui/cli@workspace:packages/cli"
+  dependencies:
+    "@types/node": "npm:^25.5.0"
+    "@types/prompts": "npm:^2.4.9"
+    commander: "npm:^12.0.0"
+    picocolors: "npm:^1.0.0"
+    prompts: "npm:^2.4.2"
+    tsup: "npm:^8.0.0"
+    typescript: "npm:^5.4.0"
+  bin:
+    behave-ui: ./dist/index.js
+  languageName: unknown
+  linkType: soft
+
+"@behave-ui/react@workspace:packages/react":
+  version: 0.0.0-use.local
+  resolution: "@behave-ui/react@workspace:packages/react"
+  dependencies:
+    "@hookform/resolvers": "npm:^3.3.0"
+    "@testing-library/dom": "npm:^10.1.0"
+    "@testing-library/jest-dom": "npm:^6.4.0"
+    "@testing-library/react": "npm:^15.0.0"
+    "@testing-library/user-event": "npm:^14.5.0"
+    "@types/react": "npm:^18.3.0"
+    "@types/react-dom": "npm:^18.3.0"
+    "@vitejs/plugin-react": "npm:^4.2.0"
+    jsdom: "npm:^24.0.0"
+    react: "npm:^18.3.0"
+    react-dom: "npm:^18.3.0"
+    react-hook-form: "npm:^7.51.0"
+    tsup: "npm:^8.0.0"
+    typescript: "npm:^5.4.0"
+    vite: "npm:^5.0.0"
+    vitest: "npm:^1.5.0"
+    zod: "npm:^3.23.0"
+  peerDependencies:
+    react: ">=18.0.0"
+    react-dom: ">=18.0.0"
+  languageName: unknown
+  linkType: soft
+
 "@changesets/apply-release-plan@npm:^7.1.0":
   version: 7.1.0
   resolution: "@changesets/apply-release-plan@npm:7.1.0"
@@ -1221,49 +1264,6 @@ __metadata:
   checksum: 10c0/ca42a02817656dbdae464ed4bb8aca6ad4718d7618e270760fea84a834ad0ecc1a22eba51421f09e5047174571131356ff3b5d80d609ced775d631df7b404b0d
   languageName: node
   linkType: hard
-
-"@stateful-ui/cli@workspace:packages/cli":
-  version: 0.0.0-use.local
-  resolution: "@stateful-ui/cli@workspace:packages/cli"
-  dependencies:
-    "@types/node": "npm:^25.5.0"
-    "@types/prompts": "npm:^2.4.9"
-    commander: "npm:^12.0.0"
-    picocolors: "npm:^1.0.0"
-    prompts: "npm:^2.4.2"
-    tsup: "npm:^8.0.0"
-    typescript: "npm:^5.4.0"
-  bin:
-    stateful-ui: ./dist/index.js
-  languageName: unknown
-  linkType: soft
-
-"@stateful-ui/react@workspace:packages/react":
-  version: 0.0.0-use.local
-  resolution: "@stateful-ui/react@workspace:packages/react"
-  dependencies:
-    "@hookform/resolvers": "npm:^3.3.0"
-    "@testing-library/dom": "npm:^10.1.0"
-    "@testing-library/jest-dom": "npm:^6.4.0"
-    "@testing-library/react": "npm:^15.0.0"
-    "@testing-library/user-event": "npm:^14.5.0"
-    "@types/react": "npm:^18.3.0"
-    "@types/react-dom": "npm:^18.3.0"
-    "@vitejs/plugin-react": "npm:^4.2.0"
-    jsdom: "npm:^24.0.0"
-    react: "npm:^18.3.0"
-    react-dom: "npm:^18.3.0"
-    react-hook-form: "npm:^7.51.0"
-    tsup: "npm:^8.0.0"
-    typescript: "npm:^5.4.0"
-    vite: "npm:^5.0.0"
-    vitest: "npm:^1.5.0"
-    zod: "npm:^3.23.0"
-  peerDependencies:
-    react: ">=18.0.0"
-    react-dom: ">=18.0.0"
-  languageName: unknown
-  linkType: soft
 
 "@testing-library/dom@npm:^10.0.0, @testing-library/dom@npm:^10.1.0":
   version: 10.4.1
