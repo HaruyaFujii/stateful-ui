@@ -1,18 +1,17 @@
 import React from 'react';
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import { render, screen, waitFor, fireEvent, act } from '@testing-library/react';
+import '@testing-library/jest-dom';
 import { z } from 'zod';
 import { AutoForm } from './index';
 
-afterEach(() => vi.restoreAllMocks());
+afterEach(() => {
+  vi.restoreAllMocks();
+});
 
 // ----------------------------------------------------------------
 // Helpers
 // ----------------------------------------------------------------
-
-function getInput(label: string | RegExp) {
-  return screen.getByLabelText(label);
-}
 
 function submit() {
   fireEvent.click(screen.getByRole('button', { name: /submit/i }));
@@ -235,5 +234,133 @@ describe('AutoForm — accessibility', () => {
     );
 
     await act(async () => { resolve(); await promise; });
+  });
+});
+
+// ----------------------------------------------------------------
+// Discriminated Union tests
+// ----------------------------------------------------------------
+
+describe('AutoForm — Discriminated Union', () => {
+  const schema = z.discriminatedUnion('accountType', [
+    z.object({
+      accountType: z.literal('personal'),
+      age: z.number().int().positive(),
+    }),
+    z.object({
+      accountType: z.literal('company'),
+      taxId: z.string().min(1),
+    }),
+  ]);
+
+  it('renders discriminator field as select', () => {
+    render(<AutoForm schema={schema} onSubmit={vi.fn()} />);
+
+    const discriminatorSelect = screen.getByLabelText(/account type/i);
+    expect(discriminatorSelect).toBeInTheDocument();
+    expect(discriminatorSelect.tagName).toBe('SELECT');
+
+    // Check options are present
+    expect(screen.getByDisplayValue('Select...')).toBeInTheDocument();
+    expect(screen.getByText('Personal')).toBeInTheDocument();
+    expect(screen.getByText('Company')).toBeInTheDocument();
+  });
+
+  it('shows personal fields when personal is selected', () => {
+    render(<AutoForm schema={schema} onSubmit={vi.fn()} />);
+
+    // Initially no conditional fields
+    expect(screen.queryByLabelText(/age/i)).not.toBeInTheDocument();
+    expect(screen.queryByLabelText(/tax id/i)).not.toBeInTheDocument();
+
+    // Select personal
+    fireEvent.change(screen.getByLabelText(/account type/i), {
+      target: { value: 'personal' }
+    });
+
+    // Personal field should appear
+    expect(screen.getByLabelText(/age/i)).toBeInTheDocument();
+    expect(screen.queryByLabelText(/tax id/i)).not.toBeInTheDocument();
+  });
+
+  it('switches from personal to company fields', () => {
+    render(<AutoForm schema={schema} onSubmit={vi.fn()} />);
+
+    // Select personal first
+    fireEvent.change(screen.getByLabelText(/account type/i), {
+      target: { value: 'personal' }
+    });
+    expect(screen.getByLabelText(/age/i)).toBeInTheDocument();
+
+    // Switch to company
+    fireEvent.change(screen.getByLabelText(/account type/i), {
+      target: { value: 'company' }
+    });
+
+    // Company field should appear, personal should disappear
+    expect(screen.getByLabelText(/tax id/i)).toBeInTheDocument();
+    expect(screen.queryByLabelText(/age/i)).not.toBeInTheDocument();
+  });
+
+  it('validates based on selected discriminator option', async () => {
+    const onSubmit = vi.fn();
+    render(<AutoForm schema={schema} onSubmit={onSubmit} />);
+
+    // Select personal but don't fill age
+    fireEvent.change(screen.getByLabelText(/account type/i), {
+      target: { value: 'personal' }
+    });
+
+    submit();
+
+    // Should show validation error and not call onSubmit
+    await waitFor(() => {
+      expect(screen.getByRole('alert')).toBeInTheDocument();
+    });
+    expect(onSubmit).not.toHaveBeenCalled();
+  });
+
+  it('submits with correct typed values for personal account', async () => {
+    const onSubmit = vi.fn();
+    render(<AutoForm schema={schema} onSubmit={onSubmit} />);
+
+    // Select personal and fill fields
+    fireEvent.change(screen.getByLabelText(/account type/i), {
+      target: { value: 'personal' }
+    });
+    fireEvent.change(screen.getByLabelText(/age/i), {
+      target: { value: '25', valueAsNumber: 25 }
+    });
+
+    submit();
+
+    await waitFor(() => {
+      expect(onSubmit).toHaveBeenCalledWith({
+        accountType: 'personal',
+        age: 25,
+      });
+    });
+  });
+
+  it('submits with correct typed values for company account', async () => {
+    const onSubmit = vi.fn();
+    render(<AutoForm schema={schema} onSubmit={onSubmit} />);
+
+    // Select company and fill fields
+    fireEvent.change(screen.getByLabelText(/account type/i), {
+      target: { value: 'company' }
+    });
+    fireEvent.change(screen.getByLabelText(/tax id/i), {
+      target: { value: '123456789' }
+    });
+
+    submit();
+
+    await waitFor(() => {
+      expect(onSubmit).toHaveBeenCalledWith({
+        accountType: 'company',
+        taxId: '123456789',
+      });
+    });
   });
 });

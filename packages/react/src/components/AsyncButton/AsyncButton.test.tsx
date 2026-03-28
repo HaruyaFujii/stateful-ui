@@ -1,12 +1,15 @@
 import React from 'react';
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import { render, screen, waitFor, act, fireEvent } from '@testing-library/react';
+import '@testing-library/jest-dom';
 import { AsyncButton } from './index';
 
 // fake timers は使わず、実際の Promise 解決タイミングに任せる
 // (vi.useFakeTimers と waitFor の相性問題を回避)
 
-afterEach(() => vi.restoreAllMocks());
+afterEach(() => {
+  vi.restoreAllMocks();
+});
 
 describe('AsyncButton', () => {
 

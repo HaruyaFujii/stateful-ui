@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { z } from 'zod';
 import type { AutoFormProps, FieldConfig } from './types';
-import { extractFields, inferFieldType, keyToLabel } from './schema-utils';
+import { extractFields, inferFieldType, keyToLabel, isDiscriminatedUnion, extractDiscriminatedUnionMeta, getEnumOptions } from './schema-utils';
 import { renderField } from './field-renderers';
 import { useAsyncState } from '../../hooks/useAsyncState';
 
@@ -24,7 +24,7 @@ import { useAsyncState } from '../../hooks/useAsyncState';
  *
  * <AutoForm schema={schema} onSubmit={async (values) => await api.create(values)} />
  */
-export function AutoForm<TSchema extends z.ZodObject<z.ZodRawShape>>({
+export function AutoForm<TSchema extends z.ZodObject<z.ZodRawShape> | z.ZodDiscriminatedUnion<any, any>>({
   schema,
   onSubmit,
   fieldConfig = {},
@@ -53,21 +53,90 @@ export function AutoForm<TSchema extends z.ZodObject<z.ZodRawShape>>({
     [form, execute, onSubmit]
   );
 
-  // Extract and sort fields
-  const fields = extractFields(schema);
-  const sortedFields = [...fields].sort((a, b) => {
-    const orderA = (fieldConfig as Record<string, { order?: number }>)[a.key]?.order ?? 999;
-    const orderB = (fieldConfig as Record<string, { order?: number }>)[b.key]?.order ?? 999;
-    return orderA - orderB;
-  });
+  // Conditional rendering based on schema type
+  const renderFormFields = () => {
+    if (isDiscriminatedUnion(schema)) {
+      const { discriminatorKey, optionsMap } = extractDiscriminatedUnionMeta(schema);
+      const discriminatorValue = form.watch(discriminatorKey);
 
-  return (
-    <form
-      onSubmit={handleSubmit}
-      className={`behave-autoform ${className}`.trim()}
-      noValidate
-    >
-      {sortedFields.map(({ key, zodType, isOptional }) => {
+      // Render discriminator field
+      const discriminatorOptions = Array.from(optionsMap.keys());
+      const discriminatorField = (
+        <div key={discriminatorKey} className="behave-field" style={{ marginBottom: '1rem' }}>
+          <label
+            htmlFor={discriminatorKey}
+            style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, marginBottom: '0.375rem' }}
+          >
+            {keyToLabel(discriminatorKey)}
+            <span style={{ color: '#ef4444' }}>*</span>
+          </label>
+          <select
+            id={discriminatorKey}
+            {...form.register(discriminatorKey)}
+            style={{
+              width: '100%',
+              padding: '0.5rem 0.75rem',
+              border: '1px solid #d1d5db',
+              borderRadius: '0.375rem',
+              fontSize: '0.875rem',
+            }}
+          >
+            <option value="">Select...</option>
+            {discriminatorOptions.map((option) => (
+              <option key={option} value={option}>
+                {keyToLabel(option)}
+              </option>
+            ))}
+          </select>
+        </div>
+      );
+
+      // Render fields for selected option
+      const selectedSchema = discriminatorValue ? optionsMap.get(discriminatorValue) : null;
+      const conditionalFields = selectedSchema
+        ? extractFields(selectedSchema).filter(({ key }) => key !== discriminatorKey)
+        : [];
+
+      return (
+        <>
+          {discriminatorField}
+          {conditionalFields.map(({ key, zodType, isOptional }) => {
+            const config = (fieldConfig as Record<string, {
+              hidden?: boolean;
+              type?: string;
+              label?: string;
+              placeholder?: string;
+              description?: string;
+              order?: number;
+            }>)[key] ?? {};
+
+            // Skip hidden fields
+            if (config.hidden) return null;
+
+            const inferredType = inferFieldType(zodType);
+            const fieldType = (config.type as typeof inferredType) || inferredType;
+            const label = config.label || keyToLabel(key);
+
+            return renderField(
+              key,
+              zodType,
+              isOptional,
+              form,
+              { ...config, label, type: fieldType } as FieldConfig
+            );
+          })}
+        </>
+      );
+    } else {
+      // Regular ZodObject handling
+      const fields = extractFields(schema as any);
+      const sortedFields = [...fields].sort((a, b) => {
+        const orderA = (fieldConfig as Record<string, { order?: number }>)[a.key]?.order ?? 999;
+        const orderB = (fieldConfig as Record<string, { order?: number }>)[b.key]?.order ?? 999;
+        return orderA - orderB;
+      });
+
+      return sortedFields.map(({ key, zodType, isOptional }) => {
         const config = (fieldConfig as Record<string, {
           hidden?: boolean;
           type?: string;
@@ -91,7 +160,17 @@ export function AutoForm<TSchema extends z.ZodObject<z.ZodRawShape>>({
           form,
           { ...config, label, type: fieldType } as FieldConfig
         );
-      })}
+      });
+    }
+  };
+
+  return (
+    <form
+      onSubmit={handleSubmit}
+      className={`behave-autoform ${className}`.trim()}
+      noValidate
+    >
+      {renderFormFields()}
 
       {renderSubmit ? (
         renderSubmit(form)

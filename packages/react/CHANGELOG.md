@@ -1,5 +1,16 @@
 # @behave-ui/react
 
+## 0.4.0
+
+### Minor Changes
+
+- feat(AutoForm): add Discriminated Union support for conditional fields
+
+  - Supports Zod discriminated unions for dynamic form fields
+  - Automatically shows/hides fields based on discriminator value
+  - Zero-break compatibility with both Zod v3 and v4
+  - Includes comprehensive test coverage for all scenarios
+
 ## 0.3.0
 
 ### Minor Changes

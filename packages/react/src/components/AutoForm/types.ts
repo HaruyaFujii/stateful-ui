@@ -1,5 +1,4 @@
 import type { z } from 'zod';
-import type { FieldValues, UseFormReturn } from 'react-hook-form';
 
 // ----------------------------------------------------------------
 // Field config — per-field UI overrides
@@ -41,7 +40,7 @@ export interface FieldConfig {
 // AutoForm props
 // ----------------------------------------------------------------
 
-export interface AutoFormProps<TSchema extends z.ZodObject<z.ZodRawShape>> {
+export interface AutoFormProps<TSchema extends z.ZodObject<z.ZodRawShape> | z.ZodDiscriminatedUnion<any, any>> {
   /** Zod schema that drives the form structure and validation. */
   schema: TSchema;
   /**
@@ -61,7 +60,7 @@ export interface AutoFormProps<TSchema extends z.ZodObject<z.ZodRawShape>> {
    * Render prop — replaces the default submit button.
    * Receives the form instance for full control.
    */
-  renderSubmit?: (form: UseFormReturn<FieldValues>) => React.ReactNode;
+  renderSubmit?: (form: any) => React.ReactNode;
   /** Class applied to the <form> element. */
   className?: string;
 }
