@@ -1,5 +1,15 @@
 # @behave-ui/react
 
+## 0.1.2
+
+### Patch Changes
+
+- c61fb05: Fix: Zod v4 compatibility for AutoForm
+
+  Updated schema-utils.ts to use `_def.typeName` instead of `instanceof` checks,
+  ensuring full compatibility with Zod v4 as per the project requirements.
+  This is a critical differentiator for behave-ui.
+
 ## 0.1.1
 
 ### Patch Changes
