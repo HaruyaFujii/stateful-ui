@@ -1,5 +1,5 @@
 {
-  "name": "@behave-ui/react",
+  "name": "@stateful-ui/react",
   "version": "0.1.0",
   "description": "Behavior-first React components. Async state, forms, and data fetching — batteries included.",
   "keywords": [
@@ -13,7 +13,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/your-org/behave-ui"
+    "url": "https://github.com/your-org/stateful-ui"
   },
   "type": "module",
   "exports": {

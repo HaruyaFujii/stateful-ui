@@ -1,4 +1,4 @@
-# behave-ui
+# stateful-ui
 
 **Behavior-first React components.**
 Async state, forms, and data fetching — batteries included.
@@ -40,10 +40,10 @@ async function handleClick() {
 }
 ```
 
-**behave-ui** はこれを「振る舞い込みコンポーネント」として提供します。
+**stateful-ui** はこれを「振る舞い込みコンポーネント」として提供します。
 
 ```tsx
-// ✅ behave-ui
+// ✅ stateful-ui
 <AsyncButton onClick={() => api.submit(data)} loadingText="送信中...">
   送信する
 </AsyncButton>
@@ -69,15 +69,15 @@ async function handleClick() {
 コードをプロジェクトにコピーします。依存関係ゼロ。コードを完全に制御できます。
 
 ```bash
-yarn dlx @behave-ui/cli add async-button
-yarn dlx @behave-ui/cli add auto-form
-yarn dlx @behave-ui/cli add data-fetch
+yarn dlx @stateful-ui/cli add async-button
+yarn dlx @stateful-ui/cli add auto-form
+yarn dlx @stateful-ui/cli add data-fetch
 
 # 全部まとめて
-yarn dlx @behave-ui/cli add async-button auto-form data-fetch
+yarn dlx @stateful-ui/cli add async-button auto-form data-fetch
 
 # 一覧を確認
-yarn dlx @behave-ui/cli list
+yarn dlx @stateful-ui/cli list
 ```
 
 ファイルは `src/components/ui/<ComponentName>/` に追加されます。
@@ -85,7 +85,7 @@ yarn dlx @behave-ui/cli list
 ### Option B — npm パッケージ
 
 ```bash
-yarn add @behave-ui/react
+yarn add @stateful-ui/react
 ```
 
 ---
@@ -95,7 +95,7 @@ yarn add @behave-ui/react
 ### AsyncButton
 
 ```tsx
-import { AsyncButton } from '@behave-ui/react';
+import { AsyncButton } from '@stateful-ui/react';
 
 <AsyncButton
   onClick={async () => await api.submitForm(data)}
@@ -135,7 +135,7 @@ idle ──(click)──► pending ──(resolve)──► success ──(rese
 
 ```tsx
 import { z } from 'zod';
-import { AutoForm } from '@behave-ui/react';
+import { AutoForm } from '@stateful-ui/react';
 
 const schema = z.object({
   name:  z.string().min(1, '必須項目です'),
@@ -169,7 +169,7 @@ const schema = z.object({
 ### DataFetch
 
 ```tsx
-import { DataFetch } from '@behave-ui/react';
+import { DataFetch } from '@stateful-ui/react';
 
 <DataFetch
   queryKey={['user', userId]}
@@ -207,7 +207,7 @@ import { DataFetch } from '@behave-ui/react';
 AsyncButton のコア。ボタン UI なしで非同期状態管理だけが欲しい場合に使用。
 
 ```tsx
-import { useAsyncState } from '@behave-ui/react';
+import { useAsyncState } from '@stateful-ui/react';
 
 const { execute, isPending, isSuccess, isError, error, reset } = useAsyncState({
   onSuccess: () => toast.success('完了！'),
@@ -235,8 +235,8 @@ const { execute, isPending, isSuccess, isError, error, reset } = useAsyncState({
 
 ```bash
 # 1. クローン
-git clone https://github.com/your-org/behave-ui.git
-cd behave-ui
+git clone https://github.com/your-org/stateful-ui.git
+cd stateful-ui
 
 # 2. Corepack を有効化（初回のみ）
 #    Node.js に標準付属。package.json の "packageManager" を読んで
@@ -261,28 +261,28 @@ yarn build
 yarn test
 
 # react パッケージのみ（開発中はこちらが速い）
-yarn workspace @behave-ui/react test
+yarn workspace @stateful-ui/react test
 
 # ウォッチモード（保存時に自動実行）
-yarn workspace @behave-ui/react test:watch
+yarn workspace @stateful-ui/react test:watch
 
 # カバレッジレポート付き
-yarn workspace @behave-ui/react test:coverage
+yarn workspace @stateful-ui/react test:coverage
 
 
 # ── 絞り込み ──────────────────────────────────────
 
 # コンポーネント単位で実行
-yarn workspace @behave-ui/react test src/components/AsyncButton
-yarn workspace @behave-ui/react test src/components/AutoForm
-yarn workspace @behave-ui/react test src/components/DataFetch
-yarn workspace @behave-ui/react test src/hooks
+yarn workspace @stateful-ui/react test src/components/AsyncButton
+yarn workspace @stateful-ui/react test src/components/AutoForm
+yarn workspace @stateful-ui/react test src/components/DataFetch
+yarn workspace @stateful-ui/react test src/hooks
 
 # テスト名でフィルタ
-yarn workspace @behave-ui/react test -t "shows loadingText"
+yarn workspace @stateful-ui/react test -t "shows loadingText"
 
 # 特定ファイルのみ
-yarn workspace @behave-ui/react test src/components/AsyncButton/AsyncButton.test.tsx
+yarn workspace @stateful-ui/react test src/components/AsyncButton/AsyncButton.test.tsx
 ```
 
 **テスト一覧**
@@ -304,16 +304,16 @@ yarn workspace @behave-ui/react test src/components/AsyncButton/AsyncButton.test
 yarn build
 
 # react パッケージのみ
-yarn workspace @behave-ui/react build
+yarn workspace @stateful-ui/react build
 
 # CLI パッケージのみ
-yarn workspace @behave-ui/cli build
+yarn workspace @stateful-ui/cli build
 
 # 型チェックのみ（ビルドなし）
-yarn workspace @behave-ui/react typecheck
+yarn workspace @stateful-ui/react typecheck
 
 # CLI のローカル動作確認
-yarn workspace @behave-ui/cli build
+yarn workspace @stateful-ui/cli build
 node packages/cli/dist/index.js list
 node packages/cli/dist/index.js add async-button --out-dir ./test-output
 ```
@@ -323,7 +323,7 @@ node packages/cli/dist/index.js add async-button --out-dir ./test-output
 ### ディレクトリ構造
 
 ```
-behave-ui/
+stateful-ui/
 ├── CLAUDE.md                     # Claude Code 向けプロジェクト設定
 ├── README.md                     # このファイル
 ├── package.json                  # yarn workspaces ルート
@@ -339,7 +339,7 @@ behave-ui/
 │       └── plan-template.md      # Plan モードのテンプレート
 │
 ├── packages/
-│   ├── react/                    # @behave-ui/react
+│   ├── react/                    # @stateful-ui/react
 │   │   └── src/
 │   │       ├── index.ts          # 公開エントリポイント
 │   │       ├── hooks/
@@ -349,7 +349,7 @@ behave-ui/
 │   │           ├── AsyncButton/
 │   │           ├── AutoForm/
 │   │           └── DataFetch/
-│   └── cli/                      # @behave-ui/cli
+│   └── cli/                      # @stateful-ui/cli
 │       └── src/
 │           ├── index.ts
 │           ├── registry.ts

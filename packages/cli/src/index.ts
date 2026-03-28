@@ -5,9 +5,9 @@ import { addCommand } from './commands/add.js';
 const program = new Command();
 
 program
-  .name('behave-ui')
+  .name('stateful-ui')
   .description(
-    pc.bold('behave-ui') +
+    pc.bold('stateful-ui') +
       ' — behavior-first React components.\n' +
       pc.gray('Async state, forms, and data fetching — batteries included.')
   )

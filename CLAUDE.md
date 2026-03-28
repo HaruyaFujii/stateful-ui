@@ -1,4 +1,4 @@
-# behave-ui — CLAUDE.md
+# stateful-ui — CLAUDE.md
 
 > このファイルは Claude Code がセッション開始時に読み込むプロジェクト固有の設定。
 > グローバル設定（`~/.claude/CLAUDE.md`）と組み合わせて使う。
@@ -7,12 +7,12 @@
 
 ## プロジェクト概要
 
-**behave-ui** は「振る舞い込みコンポーネント」を提供する React 向け OSS ライブラリ。
+**stateful-ui** は「振る舞い込みコンポーネント」を提供する React 向け OSS ライブラリ。
 非同期状態・フォーム・データ取得の「めんどくさい」を1コンポーネントで解決する。
 
 | 項目 | 内容 |
 |------|------|
-| パッケージ名 | `@behave-ui/react` / `@behave-ui/cli` |
+| パッケージ名 | `@stateful-ui/react` / `@stateful-ui/cli` |
 | 配布モデル | shadcn/ui 型（コピペ CLI） + npm パッケージ |
 | ターゲット | React 18 / 19、TypeScript strict |
 | パッケージマネージャ | yarn (berry) + workspaces |
@@ -22,7 +22,7 @@
 ## ディレクトリ構造
 
 ```
-behave-ui/
+stateful-ui/
 ├── CLAUDE.md                     ← このファイル
 ├── README.md                     ← ユーザー向けドキュメント
 ├── .claude/
@@ -32,7 +32,7 @@ behave-ui/
 │   │   └── plan-template.md      ← Plan モードの計画テンプレート
 │   └── CLAUDE.md                 ← （このファイルと同一視される）
 ├── packages/
-│   ├── react/                    ← @behave-ui/react コア
+│   ├── react/                    ← @stateful-ui/react コア
 │   │   └── src/
 │   │       ├── components/
 │   │       │   ├── AsyncButton/  ← 非同期状態内包ボタン
@@ -41,7 +41,7 @@ behave-ui/
 │   │       ├── hooks/
 │   │       │   └── useAsyncState.ts
 │   │       └── index.ts          ← 公開エントリポイント
-│   └── cli/                      ← @behave-ui/cli
+│   └── cli/                      ← @stateful-ui/cli
 │       └── src/
 │           ├── commands/add.ts
 │           ├── index.ts
@@ -65,16 +65,16 @@ yarn build
 yarn test
 
 # react パッケージのみテスト（開発中はこちら）
-yarn workspace @behave-ui/react test
+yarn workspace @stateful-ui/react test
 
 # テストをウォッチモードで実行
-yarn workspace @behave-ui/react test:watch
+yarn workspace @stateful-ui/react test:watch
 
 # 型チェック
-yarn workspace @behave-ui/react typecheck
+yarn workspace @stateful-ui/react typecheck
 
 # CLI のローカル動作確認
-yarn workspace @behave-ui/cli build
+yarn workspace @stateful-ui/cli build
 node packages/cli/dist/index.js add async-button
 ```
 
