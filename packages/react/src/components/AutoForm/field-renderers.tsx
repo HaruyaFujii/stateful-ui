@@ -12,8 +12,8 @@ interface FieldWrapperProps {
   id: string;
   label: string;
   isRequired: boolean;
-  description?: string;
-  error?: string;
+  description?: string | undefined;
+  error?: string | undefined;
   children: React.ReactNode;
 }
 
