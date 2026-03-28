@@ -1,5 +1,18 @@
 # @behave-ui/cli
 
+## 1.0.0
+
+### Major Changes
+
+- feat: Add yarn dlx support by embedding component templates
+
+  - Embed component templates directly in CLI package instead of referencing @behave-ui/react
+  - Fixes yarn dlx compatibility issues caused by package resolution differences
+  - Removes @behave-ui/react dependency from CLI, making it fully self-contained
+  - Now supports npx, yarn dlx, and pnpm dlx consistently
+
+  Breaking change: CLI no longer requires @behave-ui/react as dependency
+
 ## 0.1.4
 
 ### Patch Changes

@@ -7,9 +7,9 @@ import { REGISTRY, REGISTRY_KEYS } from '../registry.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-// コンポーネントのソースは CLI パッケージの隣の react パッケージ内
-const COMPONENTS_SOURCE_DIR = path.resolve(__dirname, '../../react/src/components');
-const HOOKS_SOURCE_DIR = path.resolve(__dirname, '../../react/src/hooks');
+// コンポーネントテンプレートは CLI パッケージ内に内蔵
+const COMPONENTS_SOURCE_DIR = __dirname; // dist/ 直下にテンプレートがコピーされている
+const HOOKS_SOURCE_DIR = path.resolve(__dirname, 'hooks');
 
 function detectOutputDir(): string {
   const candidates = [
