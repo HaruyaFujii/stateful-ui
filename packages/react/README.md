@@ -9,7 +9,7 @@ A collection of React components that handle complex UI behaviors out of the box
 ## ✨ Features
 
 - 🔄 **AsyncButton** — Automatic pending/success/error state management
-- 📋 **AutoForm** — Complete Zod v4 schema-to-form generation
+- 📋 **AutoForm** — Complete Zod v4 schema-to-form generation with Discriminated Union support
 - 📊 **DataFetch** — Declarative data fetching with built-in states
 - 🪝 **useAsyncState** — Core async state hook for custom components
 - 🛡️ **Type-safe** — Full TypeScript support with generic type inference
@@ -117,11 +117,34 @@ const schema = z.object({
 />
 ```
 
+**Discriminated Union Support (v0.4.0+):**
+
+```tsx
+const schema = z.discriminatedUnion('accountType', [
+  z.object({
+    accountType: z.literal('personal'),
+    name: z.string().min(1),
+    age: z.number().int().positive(),
+  }),
+  z.object({
+    accountType: z.literal('company'),
+    companyName: z.string().min(1),
+    taxId: z.string(),
+    employees: z.number().int().positive(),
+  }),
+]);
+
+<AutoForm schema={schema} onSubmit={handleSubmit} />
+// Fields automatically switch based on accountType selection!
+```
+
 **Zod v4 Features:**
+- ✅ Discriminated Unions for conditional fields
 - ✅ Number fields with correct type conversion
 - ✅ Enum dropdowns with proper option display
 - ✅ Default values and optional fields
 - ✅ Full schema validation
+- ✅ Zero-break compatibility with Zod v3
 
 ### DataFetch
 

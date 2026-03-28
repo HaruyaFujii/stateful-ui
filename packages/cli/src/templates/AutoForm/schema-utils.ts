@@ -100,8 +100,11 @@ export function inferFieldType(zodType: z.ZodTypeAny): FieldType {
     // Use check metadata to refine type
     const def = (inner as any).def || (inner as any)._def;
     const checks = def.checks ?? [];
-    if (checks.some((c: { kind: string }) => c.kind === 'email')) return 'email';
-    if (checks.some((c: { kind: string }) => c.kind === 'url')) return 'url';
+
+    // Zero-break compatibility: support both Zod v3 and v4
+    // v3: c.kind === 'email' | v4: c.format === 'email'
+    if (checks.some((c: any) => c.kind === 'email' || c.format === 'email')) return 'email';
+    if (checks.some((c: any) => c.kind === 'url' || c.format === 'url')) return 'url';
     return 'text';
   }
 
@@ -173,9 +176,62 @@ export interface FieldMeta {
 
 export function extractFields(schema: z.ZodObject<z.ZodRawShape>): FieldMeta[] {
   const shape = schema.shape;
+  if (!shape) {
+    return [];
+  }
   return Object.entries(shape).map(([key, zodType]) => ({
     key,
     zodType: zodType as z.ZodTypeAny,
     isOptional: isOptional(zodType as z.ZodTypeAny),
   }));
+}
+
+// ----------------------------------------------------------------
+// Discriminated Union support
+// ----------------------------------------------------------------
+
+export function isDiscriminatedUnion(schema: z.ZodTypeAny): boolean {
+  const def = (schema as any).def || (schema as any)._def;
+
+  // Zod v4: discriminated union has type 'union' with discriminator property
+  if (def.type === 'union' && def.discriminator !== undefined) {
+    return true;
+  }
+
+  // Zod v3: check typeName for backward compatibility
+  const typeName = getZodTypeName(schema);
+  return typeName === 'ZodDiscriminatedUnion';
+}
+
+export interface DiscriminatedUnionMeta {
+  discriminatorKey: string;
+  optionsMap: Map<string, z.ZodObject<z.ZodRawShape>>;
+}
+
+export function extractDiscriminatedUnionMeta(schema: z.ZodTypeAny): DiscriminatedUnionMeta {
+  const def = (schema as any).def || (schema as any)._def;
+
+  // Extract discriminator key (Zod v3/v4 compatibility)
+  const discriminatorKey = def.discriminator;
+
+  // Extract options and build map
+  const options = def.options || [];
+  const optionsMap = new Map<string, z.ZodObject<z.ZodRawShape>>();
+
+  for (const option of options) {
+    const optionShape = option.shape;
+    const discriminatorField = optionShape[discriminatorKey];
+
+    // Get the literal value from ZodLiteral (Zod v3/v4 compatibility)
+    const literalDef = (discriminatorField as any).def || (discriminatorField as any)._def;
+    // Zod v4: values array, v3: value property
+    const literalValue = literalDef.values ? literalDef.values[0] : literalDef.value;
+
+    optionsMap.set(String(literalValue), option);
+  }
+
+  return {
+    discriminatorKey,
+    optionsMap,
+  };
 }

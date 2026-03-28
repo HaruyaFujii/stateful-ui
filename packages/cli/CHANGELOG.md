@@ -1,5 +1,16 @@
 # @behave-ui/cli
 
+## 1.0.3
+
+### Patch Changes
+
+- Update CLI templates with discriminated union support
+
+  - Added discriminated union support to AutoForm templates
+  - Synced CLI templates with latest React package components
+  - Fixed Zod v4 compatibility issues in templates
+  - Templates now support conditional field rendering based on discriminator values
+
 ## 1.0.2
 
 ### Patch Changes

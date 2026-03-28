@@ -60,10 +60,11 @@ async function handleClick() {
 | `<DataFetch />` | loading / error / empty / data を 1 タグで管理 |
 | `useAsyncState` | 上記のコアとなる非同期状態フック |
 
-### ✨ **Zod v4 完全対応**
+### ✨ **Zod v4 完全対応 + Discriminated Union**
 behave-ui は **Zod v4 に完全対応した** 数少ないフォームライブラリです。
 
-**v0.2.0 の主な改善点:**
+**v0.4.0 の主な機能:**
+- 🔀 **Discriminated Union**: 条件付きフォームフィールドの自動切り替え（NEW!）
 - 🔢 **数値フィールド**: `z.number()` の値が正しく number 型として扱われる
 - 📋 **プルダウン選択**: `z.enum()` のオプションが正常に表示・選択可能
 - 🧬 **型安全性**: Zod v4 の新しい API 構造に完全対応
@@ -108,7 +109,7 @@ yarn add @behave-ui/react
 npm install @behave-ui/react
 ```
 
-**現在のバージョン: CLI v1.0.0 / React v0.2.0** (yarn dlx 対応 + Zod v4 完全対応)
+**現在のバージョン: CLI v1.0.2 / React v0.4.0** (Discriminated Union対応 + Zod v4 完全対応)
 
 ---
 
@@ -180,6 +181,30 @@ const schema = z.object({
 />
 ```
 
+**🔀 Discriminated Union（v0.4.0〜）**
+
+条件に応じてフィールドが動的に切り替わります：
+
+```tsx
+const schema = z.discriminatedUnion('accountType', [
+  z.object({
+    accountType: z.literal('personal'),
+    name: z.string().min(1),
+    age: z.number().int().positive(),
+  }),
+  z.object({
+    accountType: z.literal('company'),
+    companyName: z.string().min(1),
+    taxId: z.string().regex(/^\d{10}$/),
+    employees: z.number().int().positive(),
+  }),
+]);
+
+<AutoForm schema={schema} onSubmit={handleSubmit} />
+// accountType で "personal" を選ぶと age フィールドが表示
+// "company" を選ぶと taxId, employees フィールドに切り替わる
+```
+
 **フィールド自動マッピング**
 
 | Zod の型 | デフォルト UI | `type` で変更可能 |
@@ -189,6 +214,7 @@ const schema = z.object({
 | `z.boolean()` | `<input type="checkbox">` | `toggle` |
 | `z.enum()` | `<select>` | `radio-group` |
 | `z.date()` | `<input type="date">` | `datetime-local` |
+| `z.discriminatedUnion()` | 動的フィールド切り替え | — |
 
 ---
 
@@ -365,7 +391,7 @@ behave-ui/
 │       └── plan-template.md      # Plan モードのテンプレート
 │
 └── packages/
-    ├── react/                    # @behave-ui/react v0.2.0
+    ├── react/                    # @behave-ui/react v0.4.0
     │   ├── package.json
     │   ├── tsconfig.json
     │   ├── vite.config.ts
@@ -376,9 +402,9 @@ behave-ui/
     │       │   └── useAsyncState.test.ts
     │       └── components/
     │           ├── AsyncButton/
-    │           ├── AutoForm/     # ✨ Zod v4 完全対応
+    │           ├── AutoForm/     # ✨ Zod v4 + Discriminated Union 対応
     │           └── DataFetch/
-    └── cli/                      # @behave-ui/cli v1.0.0
+    └── cli/                      # @behave-ui/cli v1.0.2
         ├── package.json
         ├── tsconfig.json
         └── src/
@@ -407,8 +433,9 @@ behave-ui/
 | Phase 1 | ✅ 完了 | AsyncButton + useAsyncState |
 | Phase 2 | ✅ 完了 | AutoForm（Zod v4 対応） |
 | Phase 3 | ✅ 完了 | DataFetch（キャッシュ・リトライ） |
-| Phase 4 | ✅ 完了 | CLI 整備・npm publish・v0.2.0 リリース |
-| Phase 5 | 🔲 未着手 | Discriminated Union・パフォーマンス最適化 |
+| Phase 4 | ✅ 完了 | CLI 整備・npm publish・GitHub templates |
+| Phase 5 | ✅ 完了 | Discriminated Union 対応（v0.4.0） |
+| Phase 6 | 🔲 未着手 | パフォーマンス最適化・SSR 対応 |
 
 ---
 
