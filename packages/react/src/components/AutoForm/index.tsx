@@ -81,17 +81,16 @@ export function AutoForm<TSchema extends z.ZodObject<z.ZodRawShape>>({
         if (config.hidden) return null;
 
         const inferredType = inferFieldType(zodType);
-        const fieldType = (config.type as typeof inferredType) ?? inferredType;
-        const label = config.label ?? keyToLabel(key);
+        const fieldType = (config.type as typeof inferredType) || inferredType;
+        const label = config.label || keyToLabel(key);
 
-        return renderField({
-          fieldKey: key,
-          fieldType,
-          config: { ...config, label } as FieldConfig,
-          isRequired: !isOptional,
+        return renderField(
+          key,
           zodType,
+          isOptional,
           form,
-        });
+          { ...config, label, type: fieldType } as FieldConfig
+        );
       })}
 
       {renderSubmit ? (
