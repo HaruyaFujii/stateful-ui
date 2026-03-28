@@ -36,7 +36,7 @@ export function AutoForm<TSchema extends z.ZodObject<z.ZodRawShape>>({
 }: AutoFormProps<TSchema>) {
   const form = useForm({
     resolver: zodResolver(schema),
-    defaultValues: defaultValues as Record<string, unknown>,
+    defaultValues: defaultValues as any,
     mode: 'onSubmit',
   });
 
