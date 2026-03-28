@@ -1,6 +1,6 @@
 {
   "name": "@behave-ui/react",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Behavior-first React components. Async state, forms, and data fetching — batteries included.",
   "keywords": [
     "react",
